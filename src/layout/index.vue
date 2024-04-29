@@ -3,12 +3,8 @@
     <div class="layout_slider">
       <Logo></Logo>
       <el-scrollbar class="scrollbar">
-        <el-menu
-          :default-active="$route.path"
-          background-color="#001529"
-          text-color="white"
-        >
-          <Menu :menuList="userStore.menuRoutes"></Menu>
+        <el-menu :default-active="$route.path" background-color="#001529" text-color="white">
+          <MenuView :menuList="userStore.menuRoutes"></MenuView>
         </el-menu>
       </el-scrollbar>
     </div>
@@ -16,15 +12,15 @@
       <Tabbar></Tabbar>
     </div>
     <div class="layout_main">
-      <Main></Main>
+      <MainView></MainView>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Logo from './logo/index.vue'
-import Menu from './menu/index.vue'
-import Main from './main/index.vue'
+import MenuView from './menu/index.vue'
+import MainView from './main/index.vue'
 import Tabbar from './tabbar/index.vue'
 import useUserStore from '@/store/modules/user' // 获取用户相关
 

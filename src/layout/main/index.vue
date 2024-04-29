@@ -27,7 +27,7 @@ watch(
 </script>
 <script lang="ts">
 export default {
-  name: 'Main'
+  name: 'MainView'
 }
 </script>
 
