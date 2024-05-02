@@ -116,6 +116,7 @@ import type {
 } from '@/api/product/spu/type'
 import { ElMessage } from 'element-plus'
 
+let $emit = defineEmits(['changeScene'])
 // 存储当前已有的SPU数据的容器
 let AllBrandData = ref<BrandData[]>([])
 let imgList = ref<SpuImg[]>([])
@@ -273,13 +274,12 @@ const save = async () => {
   }
 }
 
-// 点击取消按钮：通知父组件切换为场景1。父组件停留在当前页，所以params为update
-let $emit = defineEmits(['changeScene'])
+// 点击取消按钮(自定义事件的方法)：通知父组件切换为场景1。父组件停留在当前页，所以params为update
 const cancel = () => {
   $emit('changeScene', { flag: 0, params: 'update' })
 }
 
-// 添加一个新的SPU初始化请求方法
+// 添加一个新SPU的初始化请求方法
 const initAddSpu = async (c3Id: number | string) => {
   // 清空数据
   Object.assign(SpuParams.value, {

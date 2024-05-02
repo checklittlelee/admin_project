@@ -16,7 +16,7 @@
           <el-table-column label="SPU描述" prop="description" show-overflow-tooltip></el-table-column>
           <el-table-column label="SPU操作">
             <template #default="scope">
-              <el-button type="primary" size="small" icon="Plus" title="添加SKU"></el-button>
+              <el-button type="primary" size="small" icon="Plus" title="添加SKU" @click="addSku(scope.row)"></el-button>
               <el-button
                 type="primary"
                 size="small"
@@ -24,8 +24,14 @@
                 title="修改SPU"
                 @click="updateSpu(scope.row)"
               ></el-button>
-              <el-button type="primary" size="small" icon="View" title="查看SKU列表"></el-button>
-              <el-popconfirm :title="`你确定删除${scope.row.spuName}?`" width="200px">
+              <el-button
+                type="primary"
+                size="small"
+                icon="View"
+                title="查看SKU列表"
+                @click="findSku(scope.row)"
+              ></el-button>
+              <el-popconfirm :title="`你确定删除${scope.row.spuName}?`" width="200px" @confirm="deleteSpu(scope.row)">
                 <template #reference>
                   <el-button type="danger" icon="Delete" title="删除SPU" size="small"></el-button>
                 </template>
@@ -49,15 +55,29 @@
       <!-- *笔记*绑定事件监听器时，直接指定方法名不需要显示地写形参 -->
       <SpuForm ref="spu" v-show="scene == 1" @changeScene="changeScene" />
       <!-- 场景2: 添加/修改SKU子组件 -->
-      <SkuForm v-show="scene == 2" />
+      <SkuForm ref="sku" v-show="scene == 2" @changeScene="changeScene" />
+      <!-- dialog对话框：在SPU中点击查看按钮，展示已有的SKU数据 -->
+      <el-dialog v-model="dialogVisible" title="SKU列表" width="500">
+        <el-table border :data="skuArr">
+          <el-table-column label="SKU名字" prop="skuName"></el-table-column>
+          <el-table-column label="SKU价格" prop="price"></el-table-column>
+          <el-table-column label="SKU重量" prop="weight"></el-table-column>
+          <el-table-column label="SKU图片">
+            <template #default="scope">
+              <img :src="scope.row.skuDefaultImg" style="width: 100px; height: 100px" />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount } from 'vue'
-import { reqHasSpu } from '@/api/product/spu'
-import type { HasSpuResponseData, Records, SpuData } from '@/api/product/spu/type'
+import { reqHasSpu, reqSkuList, reqDeleteSpu } from '@/api/product/spu'
+import type { HasSpuResponseData, Records, SpuData, SkuData, SkuInfoData } from '@/api/product/spu/type'
+import { ElMessage } from 'element-plus'
 // 引入子组件
 import SpuForm from './spuForm.vue'
 import SkuForm from './skuForm.vue'
@@ -77,6 +97,12 @@ let records = ref<Records>([])
 let total = ref<number>(0)
 // 获取子组件实例SpuForm
 let spu = ref<any>()
+// 获取子组件实例SkuForm
+let sku = ref<any>()
+// 存储所有的SKU数据
+let skuArr = ref<SkuData[]>([])
+// SKU的dialog的显示与隐藏
+let dialogVisible = ref<boolean>(false)
 
 // 监听三级分类ID变化
 watch(
@@ -108,12 +134,42 @@ const addSpu = () => {
   // 调用子组件方法初始化数据
   spu.value.initAddSpu(categoryStore.c3Id)
 }
+// 点击添加SKU按钮
+const addSku = (row: SpuData) => {
+  // 切换场景2
+  scene.value = 2
+  sku.value.initAddSku(categoryStore.c1Id, categoryStore.c2Id, row)
+}
 // 点击修改SPU按钮
 const updateSpu = (row: SpuData) => {
   // 切换场景1
   scene.value = 1
   // 调用子组件实例方法获取完整的已有的SPU数据
   spu.value.initHasSpuData(row)
+}
+// 点击查看SKU列表按钮
+const findSku = async (row: SpuData) => {
+  let result: SkuInfoData = await reqSkuList(row.id as number)
+  if (result.code === 200) {
+    skuArr.value = result.data
+    dialogVisible.value = true // 显示dialog
+  }
+}
+// 点击删除SPU按钮
+const deleteSpu = async (row: SpuData) => {
+  let result = await reqDeleteSpu(row.id as number)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功'
+    })
+    getHasSpu(pageNo.value)
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败'
+    })
+  }
 }
 // 子组件SpuForm绑定自定义事件：子组件点击保存/取消 通知父组件切换为场景0。如果是保存，在判断params是add/update决定停留在第一页还是当前页
 const changeScene = (obj: any) => {
