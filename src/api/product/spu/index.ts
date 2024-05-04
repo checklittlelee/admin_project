@@ -9,7 +9,7 @@ import type {
   SpuHasImg,
   SaleAttrResponseData,
   HasSaleAttrResponseData
-} from './type.ts'
+} from './type'
 
 // SPU管理模块接口地址（1+4）
 enum API {

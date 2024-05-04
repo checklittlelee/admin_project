@@ -30,7 +30,7 @@
       <!-- 底部分页器 -->
       <el-pagination
         v-model:current-page="pageNo"
-        v-model:page-size="limit"
+        v-model:page-size="pageSize"
         :page-sizes="[3, 5, 7, 9]"
         :background="true"
         layout="prev, pager, next, jumper, ->,sizes, total"
@@ -78,7 +78,7 @@ import type { UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
 let pageNo = ref<number>(1) // 当前显示在第1页
-let limit = ref<number>(3) // 每页显示3条目
+let pageSize = ref<number>(3) // 每页显示3条目
 let total = ref<number>(0) // 品牌数据总数
 let brandArr = ref<Records>([]) // 品牌数组
 let dialogFormVisible = ref<boolean>(false) // 对话框显示与否
@@ -90,7 +90,7 @@ let formRef = ref() // 获取对话框中的表单
 
 const getHasBrand = async (pager = 1) => {
   pageNo.value = pager
-  let result: BrandResponseData = await reqHasBrand(pageNo.value, limit.value)
+  let result: BrandResponseData = await reqHasBrand(pageNo.value, pageSize.value)
   if (result.code === 200) {
     total.value = result.data.total
     brandArr.value = result.data.records
@@ -100,7 +100,7 @@ onMounted(() => {
   getHasBrand()
 })
 const sizeChange = () => {
-  // limit v-model自动更新，无需传参；getHasBrand()调用时，pager没有值，默认为1，回到第一页
+  // pageSize v-model自动更新，无需传参；getHasBrand()调用时，pager没有值，默认为1，回到第一页
   getHasBrand()
 }
 

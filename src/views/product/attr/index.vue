@@ -84,7 +84,7 @@
 
 <script setup lang="ts">
 import { watch, ref, reactive, nextTick, onBeforeUnmount } from 'vue'
-import { reqAttr, reqAddOrUpdateAttr, reqRemoveAttr } from '@/api/product/attr'
+import { reqAttr, reqAddOrUpdateAttr, reqDeleteAttr } from '@/api/product/attr'
 import type { AttrResponseData, Attr, AttrValue } from '@/api/product/attr/type'
 import useCategoryStore from '@/store/modules/category'
 import { ElMessage } from 'element-plus'
@@ -202,7 +202,7 @@ const toEdit = (row: AttrValue, $index: number) => {
 
 // 点击删除某一个已有属性按钮
 const deleteAttr = async (attrId: number) => {
-  let result: any = await reqRemoveAttr(attrId)
+  let result: any = await reqDeleteAttr(attrId)
   if (result.code === 200) {
     ElMessage({
       type: 'success',

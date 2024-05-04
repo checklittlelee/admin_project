@@ -30,4 +30,4 @@ export const reqAttr = (category1Id: string | number, category2Id: string | numb
 // 新增或者修改已有的属性接口方法
 export const reqAddOrUpdateAttr = (data: Attr) => request.post<any, any>(API.ADDORUPDATEATTR_URL, data)
 // 删除已有的属性接口方法
-export const reqRemoveAttr = (attrId: number) => request.delete<any, any>(API.DELETEATTR_URL + attrId)
+export const reqDeleteAttr = (attrId: number) => request.delete<any, any>(API.DELETEATTR_URL + attrId)

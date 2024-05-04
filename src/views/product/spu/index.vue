@@ -29,7 +29,7 @@
                 size="small"
                 icon="View"
                 title="查看SKU列表"
-                @click="findSku(scope.row)"
+                @click="checkSku(scope.row)"
               ></el-button>
               <el-popconfirm :title="`你确定删除${scope.row.spuName}?`" width="200px" @confirm="deleteSpu(scope.row)">
                 <template #reference>
@@ -148,7 +148,7 @@ const updateSpu = (row: SpuData) => {
   spu.value.initHasSpuData(row)
 }
 // 点击查看SKU列表按钮
-const findSku = async (row: SpuData) => {
+const checkSku = async (row: SpuData) => {
   let result: SkuInfoData = await reqSkuList(row.id as number)
   if (result.code === 200) {
     skuArr.value = result.data
