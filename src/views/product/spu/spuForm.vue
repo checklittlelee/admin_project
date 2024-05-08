@@ -136,7 +136,7 @@ let selectedAttr = ref<string>('')
 
 let inputArr = ref<any>([])
 
-// 子组件定义一个方法，父组件点击修改SPU按钮
+// 子组件定义一个方法，父组件点击编辑SPU按钮
 const initHasSpuData = async (spu: SpuData) => {
   SpuParams.value = spu
   let result: AllBrand = await reqAllBrand()
@@ -265,7 +265,7 @@ const save = async () => {
   if (result.code === 200) {
     ElMessage({
       type: 'success',
-      message: SpuParams.value.id ? '更新成功' : '添加成功'
+      message: SpuParams.value.id ? '编辑成功' : '添加成功'
     })
     $emit('changeScene', {
       flag: 0,

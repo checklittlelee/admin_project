@@ -44,7 +44,7 @@
       @current-change="getHasSku"
     />
     <!-- 抽屉组件--展示SKU商品详情 -->
-    <el-drawer v-model="drawer" title="查看商品详情" direction="rtl">
+    <el-drawer v-model="drawer" title="查看商品详情">
       <template #default>
         <el-row style="margin: 15px 0px">
           <el-col :span="6">名称</el-col>
@@ -135,7 +135,7 @@ const updateSale = async (row: SkuData) => {
 const editSku = () => {
   ElMessage({
     type: 'success',
-    message: '程序员正在开发中，敬请期待。'
+    message: '程序员正在开发中，敬请期待'
   })
 }
 // 点击查看SKU商品详情，呼出一个临时右侧边栏

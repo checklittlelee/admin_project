@@ -3,34 +3,16 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form
-          class="login_form"
-          :model="loginForm"
-          :rules="rules"
-          ref="loginForms"
-        >
+        <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForms">
           <h2>欢迎来到商城研选</h2>
           <el-form-item prop="username">
-            <el-input
-              :prefix-icon="User"
-              v-model="loginForm.username"
-            ></el-input>
+            <el-input :prefix-icon="User" v-model="loginForm.username"></el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input
-              :prefix-icon="Lock"
-              type="password"
-              v-model="loginForm.password"
-              show-password
-            ></el-input>
+            <el-input :prefix-icon="Lock" type="password" v-model="loginForm.password" show-password></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button
-              :loading="loading"
-              class="login_btn"
-              type="primary"
-              size="default"
-              @click="login"
+            <el-button :loading="loading" class="login_btn" type="primary" size="default" @click="login"
               >登录</el-button
             >
           </el-form-item>
@@ -87,7 +69,7 @@ const validatorUserName = (rule: any, value: any, callback: any) => {
   }
 }
 const validatorPassword = (rule: any, value: any, callback: any) => {
-  if (value.length >= 5) {
+  if (value.length >= 6) {
     callback()
   } else {
     callback(new Error('密码长度至少六位'))

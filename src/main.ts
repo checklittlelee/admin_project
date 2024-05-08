@@ -9,6 +9,7 @@ import '@/styles/index.scss'
 import router from './router'
 import pinia from './store'
 import './permission' // 路由鉴权
+import 'default-passive-events'
 
 const app = createApp(App)
 

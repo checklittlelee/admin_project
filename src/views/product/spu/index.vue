@@ -21,7 +21,7 @@
                 type="primary"
                 size="small"
                 icon="Edit"
-                title="修改SPU"
+                title="编辑SPU"
                 @click="updateSpu(scope.row)"
               ></el-button>
               <el-button
@@ -51,10 +51,10 @@
           @current-change="getHasSpu"
         />
       </div>
-      <!-- 场景1: 添加/修改SPU子组件 -->
+      <!-- 场景1: 添加/编辑SPU子组件 -->
       <!-- *笔记*绑定事件监听器时，直接指定方法名不需要显示地写形参 -->
       <SpuForm ref="spu" v-show="scene == 1" @changeScene="changeScene" />
-      <!-- 场景2: 添加/修改SKU子组件 -->
+      <!-- 场景2: 添加/编辑SKU子组件 -->
       <SkuForm ref="sku" v-show="scene == 2" @changeScene="changeScene" />
       <!-- dialog对话框：在SPU中点击查看按钮，展示已有的SKU数据 -->
       <el-dialog v-model="dialogVisible" title="SKU列表" width="500">
@@ -86,7 +86,7 @@ import useCategoryStore from '@/store/modules/category'
 let categoryStore = useCategoryStore()
 
 // 场景切换
-let scene = ref<number>(0) // 0: 显示已有SPU   1：添加/修改SPU子组件   2：添加/修改SKU子组件
+let scene = ref<number>(0) // 0: 显示已有SPU   1：添加/编辑SPU子组件   2：添加/编辑SKU子组件
 // 分页器默认页码
 let pageNo = ref<number>(1)
 // 每页页码数
@@ -115,7 +115,7 @@ watch(
 )
 // 获取某一三级分类下已有的全部SPU
 const getHasSpu = async (pager = 1) => {
-  // 修改当前页码
+  // 编辑当前页码
   pageNo.value = pager
   let result: HasSpuResponseData = await reqHasSpu(pageNo.value, pageSize.value, categoryStore.c3Id)
   if (result.code === 200) {
@@ -140,7 +140,7 @@ const addSku = (row: SpuData) => {
   scene.value = 2
   sku.value.initAddSku(categoryStore.c1Id, categoryStore.c2Id, row)
 }
-// 点击修改SPU按钮
+// 点击编辑SPU按钮
 const updateSpu = (row: SpuData) => {
   // 切换场景1
   scene.value = 1
@@ -175,7 +175,7 @@ const deleteSpu = async (row: SpuData) => {
 const changeScene = (obj: any) => {
   scene.value = obj.flag
   if (obj.params === 'update') {
-    //更新留在当前页
+    //编辑留在当前页
     getHasSpu(pageNo.value)
   } else {
     //添加留在第一页

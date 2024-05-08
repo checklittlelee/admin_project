@@ -14,6 +14,9 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
+      default-passive-events:
+        specifier: ^2.0.0
+        version: 2.0.0
       element-plus:
         specifier: ^2.6.3
         version: 2.6.3(vue@3.4.21(typescript@5.4.3))
@@ -931,6 +934,9 @@ packages:
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
+
+  default-passive-events@2.0.0:
+    resolution: {integrity: sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ==}
 
   define-property@0.2.5:
     resolution: {integrity: sha512-Rr7ADjQZenceVOAKop6ALkkRAmH1A4Gx9hV/7ZujPUN2rkATqFO0JZLZInbAjpZYoJ1gUx8MRMQVkYemcbMSTA==}
@@ -3108,6 +3114,8 @@ snapshots:
   decode-uri-component@0.2.2: {}
 
   deep-is@0.1.4: {}
+
+  default-passive-events@2.0.0: {}
 
   define-property@0.2.5:
     dependencies:

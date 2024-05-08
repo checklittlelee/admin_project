@@ -8,7 +8,7 @@ enum API {
   GETBRAND_URL = '/admin/product/baseTrademark/',
   // 添加品牌接口
   ADDBRAND_URL = '/admin/product/baseTrademark/save',
-  // 修改品牌接口
+  // 编辑品牌接口
   UPDATEBRAND_URL = '/admin/product/baseTrademark/update',
   // 删除品牌接口
   DELETE_URL = '/admin/product/baseTrademark/remove/'
@@ -18,10 +18,10 @@ enum API {
 export const reqHasBrand = (page: number, limit: number) =>
   request.get<any, BrandResponseData>(API.GETBRAND_URL + `${page}/${limit}`)
 
-// 添加/修改品牌的接口方法
+// 添加/编辑品牌的接口方法
 export const reqAddOrUpdateBrand = (data: BrandData) => {
   if (data.id) {
-    // 存在id，为修改品牌
+    // 存在id，为编辑品牌
     return request.put(API.UPDATEBRAND_URL, data)
   } else {
     // 没有id，为添加品牌

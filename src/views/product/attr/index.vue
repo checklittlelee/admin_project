@@ -33,7 +33,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <!-- 展示区--添加与修改（点击编辑按钮后） -->
+      <!-- 展示区--添加与编辑（点击编辑按钮后） -->
       <div v-show="scene == 1">
         <el-form :inline="true">
           <el-form-item label="属性名称">
@@ -43,7 +43,7 @@
         <el-button @click="addAttrValue" :disabled="!attrParams.attrName" type="primary" size="default" icon="Plus"
           >添加属性值</el-button
         >
-        <el-button type="primary" size="default" icon="Close" @click="cancel">取消</el-button>
+        <el-button type="primary" size="default" icon="Close" @click="scene = 0">取消</el-button>
         <!-- 属性值列表 -->
         <el-table border style="margin: 10px 0px" :data="attrParams.attrValueList">
           <el-table-column label="序号" width="80px" type="index" align="center"></el-table-column>
@@ -76,7 +76,7 @@
         <el-button type="primary" size="default" @click="save" :disabled="attrParams.attrValueList.length <= 0"
           >保存</el-button
         >
-        <el-button type="primary" size="default" @click="cancel">取消</el-button>
+        <el-button type="primary" size="default" @click="scene = 0">取消</el-button>
       </div>
     </el-card>
   </div>
@@ -90,10 +90,10 @@ import useCategoryStore from '@/store/modules/category'
 import { ElMessage } from 'element-plus'
 let categoryStore = useCategoryStore()
 let attrArr = ref<Attr[]>([])
-let scene = ref<number>(0) // 定义card组件内容切换的变量 scene=0，显示属性与属性值table；scene=1，展示添加与修改
+let scene = ref<number>(0) // 定义card组件内容切换的变量 scene=0，显示属性与属性值table；scene=1，展示添加与编辑
 let attrParams = reactive<Attr>({
-  attrName: '', // 新增的属性名
-  attrValueList: [], // 新增的属性值数组
+  attrName: '', // 添加的属性名
+  attrValueList: [], // 添加的属性值数组
   categoryId: '', // 三级分类的ID
   categoryLevel: 3 // 三级分类
 })
@@ -121,22 +121,18 @@ const getAttr = async () => {
 // 点击添加属性按钮
 const addAttr = () => {
   Object.assign(attrParams, {
-    attrName: '', // 新增的属性名
-    attrValueList: [], // 新增的属性值数组
+    attrName: '', // 添加的属性名
+    attrValueList: [], // 添加的属性值数组
     categoryId: categoryStore.c3Id, // 收集三级分类ID
     categoryLevel: 3 // 三级分类
   })
   scene.value = 1
 }
-// 点击修改已有属性的编辑按钮
+// 点击编辑已有属性的编辑按钮
 const updateAttr = (row: Attr) => {
   scene.value = 1
   // 将已有的属性对象赋值给attrParams对象即可
   Object.assign(attrParams, JSON.parse(JSON.stringify(row)))
-}
-// 点击取消按钮
-const cancel = () => {
-  scene.value = 0
 }
 
 // 添加属性值按钮
@@ -156,10 +152,10 @@ const save = async () => {
   let result: any = await reqAddOrUpdateAttr(attrParams)
   if (result.code === 200) {
     scene.value = 0 // 切换场景
-    ElMessage({ type: 'success', message: attrParams.id ? '修改成功' : '添加成功' })
+    ElMessage({ type: 'success', message: attrParams.id ? '编辑成功' : '添加成功' })
     getAttr()
   } else {
-    ElMessage({ type: 'error', message: attrParams.id ? '修改失败' : '添加失败' })
+    ElMessage({ type: 'error', message: attrParams.id ? '编辑失败' : '添加失败' })
   }
 }
 

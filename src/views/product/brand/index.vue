@@ -39,8 +39,8 @@
         @current-change="getHasBrand"
       />
     </el-card>
-    <!-- 对话框组件：添加/修改已有品牌 -->
-    <el-dialog v-model="dialogFormVisible" :title="brandParams.id ? '修改品牌' : '添加品牌'">
+    <!-- 对话框组件：添加/编辑品牌 -->
+    <el-dialog v-model="dialogFormVisible" :title="brandParams.id ? '编辑品牌' : '添加品牌'">
       <!-- 表单 -->
       <el-form style="width: 80%" :model="brandParams" :rules="rules" ref="formRef">
         <el-form-item label="品牌名称" label-width="100px" prop="tmName">
@@ -62,8 +62,8 @@
       <!-- 按钮 具名操作 -->
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="cancel">取消</el-button>
-          <el-button type="primary" @click="confirm"> 确定 </el-button>
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirm">确定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -116,7 +116,7 @@ const addBrand = () => {
     formRef.value.clearValidate('logoUrl')
   })
 }
-// 点击修改品牌按钮 修改需要携带id
+// 点击编辑品牌按钮 编辑需要携带id
 const updateBrand = (row: BrandData) => {
   dialogFormVisible.value = true
   Object.assign(brandParams, row)
@@ -126,10 +126,7 @@ const updateBrand = (row: BrandData) => {
     formRef.value.clearValidate('logoUrl')
   })
 }
-// 点击对话框中取消按钮
-const cancel = () => {
-  dialogFormVisible.value = false
-}
+
 // 点击对话框中确认按钮
 const confirm = async () => {
   await formRef.value.validate() // 发送请求前对整个表单进行校验。valite函数返回一个promise，fullfilled后执行后面逻辑
@@ -140,15 +137,14 @@ const confirm = async () => {
     dialogFormVisible.value = false
     ElMessage({
       type: 'success',
-      message: brandParams.id ? '修改品牌成功' : '添加品牌成功'
+      message: brandParams.id ? '编辑品牌成功' : '添加品牌成功'
     })
-    getHasBrand(brandParams.id ? pageNo.value : 1) // 重新获取品牌数据。如果是修改留在当前页 如果是添加回到第一页
+    getHasBrand(brandParams.id ? pageNo.value : 1) // 重新获取品牌数据。如果是编辑留在当前页 如果是添加回到第一页
   } else {
     // 失败
-    dialogFormVisible.value = false
     ElMessage({
       type: 'error',
-      message: brandParams.id ? '修改品牌失败' : '添加品牌失败'
+      message: brandParams.id ? '编辑品牌失败' : '添加品牌失败'
     })
   }
 }

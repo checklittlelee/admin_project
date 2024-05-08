@@ -1,11 +1,6 @@
-// 用户相关的接口
+// 用户登录相关的接口
 import request from '@/utils/request'
-import type {
-  loginFormData,
-  ResponseData,
-  loginResponseData,
-  userInfoResponseData
-} from './type'
+import type { loginFormData, ResponseData, loginResponseData, userInfoResponseData } from './type'
 
 enum API {
   LOGIN_URL = '/admin/acl/index/login',
@@ -14,10 +9,8 @@ enum API {
 }
 
 // 登录接口
-export const reqLogin = (data: loginFormData) =>
-  request.post<loginResponseData>(API.LOGIN_URL, data)
+export const reqLogin = (data: loginFormData) => request.post<loginResponseData>(API.LOGIN_URL, data)
 // 获取用户信息
-export const reqUserInfo = () =>
-  request.get<userInfoResponseData>(API.USERINFO_URL)
+export const reqUserInfo = () => request.get<userInfoResponseData>(API.USERINFO_URL)
 // 退出登录
 export const reqLogout = () => request.post<ResponseData>(API.LOGOUT_URL)
