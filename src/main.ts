@@ -10,6 +10,7 @@ import router from './router'
 import pinia from './store'
 import './permission' // 路由鉴权
 import 'default-passive-events'
+import 'element-plus/theme-chalk/dark/css-vars.css' // 暗黑模式
 
 const app = createApp(App)
 
