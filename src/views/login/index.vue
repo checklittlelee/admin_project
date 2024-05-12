@@ -61,14 +61,14 @@ const login = async () => {
 }
 
 // 自定义校验规则函数
-const validatorUserName = (rule: any, value: any, callback: any) => {
+const validatorUserName = (_rule: any, value: any, callback: any) => {
   if (value.length >= 5) {
     callback()
   } else {
     callback(new Error('账号长度至少五位'))
   }
 }
-const validatorPassword = (rule: any, value: any, callback: any) => {
+const validatorPassword = (_rule: any, value: any, callback: any) => {
   if (value.length >= 6) {
     callback()
   } else {

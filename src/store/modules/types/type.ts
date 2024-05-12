@@ -5,6 +5,7 @@ export interface UserState {
   menuRoutes: RouteRecordRaw[]
   username: string
   avatar: string
+  buttons: string[]
 }
 
 // 分类仓库state对象的ts类型

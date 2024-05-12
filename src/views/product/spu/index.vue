@@ -33,7 +33,13 @@
               ></el-button>
               <el-popconfirm :title="`你确定删除${scope.row.spuName}?`" width="200px" @confirm="deleteSpu(scope.row)">
                 <template #reference>
-                  <el-button type="danger" icon="Delete" title="删除SPU" size="small"></el-button>
+                  <el-button
+                    type="danger"
+                    icon="Delete"
+                    title="删除SPU"
+                    size="small"
+                    v-btn="'btn.Spu.delete'"
+                  ></el-button>
                 </template>
               </el-popconfirm>
             </template>

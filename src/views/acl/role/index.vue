@@ -185,7 +185,6 @@ const savePermission = async () => {
       type: 'success',
       message: '权限分配成功'
     })
-    window.location.reload()
   }
 }
 

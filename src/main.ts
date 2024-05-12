@@ -11,6 +11,7 @@ import pinia from './store'
 import './permission' // 路由鉴权
 import 'default-passive-events'
 import 'element-plus/theme-chalk/dark/css-vars.css' // 暗黑模式
+import { hasButton } from '@/directive/hasButton'
 
 const app = createApp(App)
 
@@ -20,4 +21,5 @@ app.use(ElementPlus, {
 app.use(globalComponent)
 app.use(router)
 app.use(pinia)
+hasButton(app)
 app.mount('#app')

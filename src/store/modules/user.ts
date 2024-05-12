@@ -1,14 +1,24 @@
 import { defineStore } from 'pinia'
+import router from '@/router'
 import { reqLogin, reqUserInfo, reqLogout } from '@/api/user'
+import type { loginFormData, ResponseData, loginResponseData, userInfoResponseData } from '@/api/user/type.ts'
 import type { UserState } from './types/type'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token.ts'
-import { constantRoute } from '@/router/routes'
-import type {
-  loginFormData,
-  ResponseData,
-  loginResponseData,
-  userInfoResponseData
-} from '@/api/user/type.ts'
+import { constantRoute, asyncRoute } from '@/router/routes'
+// @ts-expect-error no TS provided by lodash
+import cloneDeep from 'lodash/cloneDeep'
+
+// 过滤当前用户需要展示的异步路由
+function filterAsyncRoute(asyncRoute: any, routes: any) {
+  return asyncRoute.filter((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item.children, routes)
+      }
+      return true
+    }
+  })
+}
 
 const useUserStore = defineStore('User', {
   state: (): UserState => {
@@ -16,7 +26,8 @@ const useUserStore = defineStore('User', {
       token: GET_TOKEN(), // 用户唯一标识token
       menuRoutes: constantRoute,
       username: '',
-      avatar: ''
+      avatar: '',
+      buttons: []
     }
   },
   actions: {
@@ -38,7 +49,13 @@ const useUserStore = defineStore('User', {
       if (result.code === 200) {
         this.username = result.data.name
         this.avatar = result.data.avatar
-        return 'ok'
+        this.buttons = result.data.buttons
+        //计算当前用户需要展示的异步路由
+        const userAsyncRoute = filterAsyncRoute(cloneDeep(asyncRoute), result.data.routes)
+        this.menuRoutes = [...constantRoute, ...userAsyncRoute]
+        userAsyncRoute.forEach((route: any) => {
+          router.addRoute(route)
+        })
       } else {
         return Promise.reject(new Error(result.message))
       }
@@ -51,7 +68,6 @@ const useUserStore = defineStore('User', {
         this.username = ''
         this.avatar = ''
         REMOVE_TOKEN()
-        return 'ok'
       } else {
         return Promise.reject(new Error(result.message))
       }
